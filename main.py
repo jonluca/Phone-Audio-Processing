@@ -7,11 +7,9 @@ import librosa
 EIGHT_KHZ = 8096
 SPEECH_LOW_BAND = 200
 SPEECH_UPPER_BAND = 3400
-# 1. Get the file path to the included audio example
-filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'samples/game.wav')
 
-# 2. Load the audio as a waveform `y`
-#    Store the sampling rate as `sr`, pass sr=None to preserve original sample rate
+filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input/game.wav')
+
 time_series, sample_rate = librosa.load(filename, sr=None)
 
 # resample at 8khz
@@ -21,6 +19,8 @@ librosa.output.write_wav("output/eightkhz_resampled.wav", resampled_time_series,
 
 short_time_fourier_transform = librosa.core.stft(y=resampled_time_series)
 
+# Clear out speech bands
+# TODO(jonluca) is there a better way of doing this? 
 for i in range(SPEECH_LOW_BAND):
     short_time_fourier_transform[i] = 0
 
