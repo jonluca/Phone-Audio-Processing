@@ -20,12 +20,9 @@ librosa.output.write_wav("output/eightkhz_resampled.wav", resampled_time_series,
 short_time_fourier_transform = librosa.core.stft(y=resampled_time_series)
 
 # Clear out speech bands
-# TODO(jonluca) is there a better way of doing this? 
-for i in range(SPEECH_LOW_BAND):
-    short_time_fourier_transform[i] = 0
-
-for i in range(SPEECH_UPPER_BAND, len(short_time_fourier_transform)):
-    short_time_fourier_transform[i] = 0
+# TODO(jonluca) is there a better way of doing this?
+short_time_fourier_transform[:SPEECH_LOW_BAND] = 0
+short_time_fourier_transform[SPEECH_UPPER_BAND: len(short_time_fourier_transform)] = 0
 
 reconstructed_time_series = librosa.core.istft(short_time_fourier_transform)
 librosa.output.write_wav("output/eightkhz_resampled_unfrequencied.wav", reconstructed_time_series, EIGHT_KHZ)
